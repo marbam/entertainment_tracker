@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import MediaRow from './MediaRow';
 import MovieSource from './MovieSource';
-
+import DateRow from './DateRow';
 
 class Container extends Component {
 
@@ -11,10 +11,33 @@ class Container extends Component {
         this.state = {
             category: 'Movie',
             showSource: true,
-            source: ''
+            source: '',
+            dates: [],
+            dateSelected: 0
         }
         this.changeCategory = this.changeCategory.bind(this);
         this.changeSource = this.changeSource.bind(this);
+        this.changeDate = this.changeDate.bind(this);
+    }
+
+    componentDidMount() {
+        let weekDays = ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+        const today = new Date()
+        const yesterday = new Date(today)
+        const twoDays = new Date(today);
+
+        yesterday.setDate(yesterday.getDate() - 1);
+        twoDays.setDate(today.getDate() - 2)
+
+        let yest = weekDays[yesterday.getDay()];
+        let two = weekDays[twoDays.getDay()];
+
+        this.setState({dates: [
+            {name: '...', value:'-3'},
+            {name: two, value:'-2'},
+            {name: yest, value:'-1'},
+            {name: 'Today', value:'0'},
+        ]});
     }
 
     changeCategory(changeTo) {
@@ -22,13 +45,19 @@ class Container extends Component {
             category:changeTo,
             showSource: changeTo == "Movie" ? true : false,
             source: '',
-            dateSelected: 'today'
+            dateSelected: 'Today'
         })
     }
 
     changeSource(source) {
         this.setState({
             source:source
+        })
+    }
+
+    changeDate(date) {
+        this.setState({
+            dateSelected:date
         })
     }
 
@@ -39,23 +68,7 @@ class Container extends Component {
                 <MediaRow category={this.state.category} change={this.changeCategory}></MediaRow>
                 {this.state.showSource ? <MovieSource source={this.state.source} change={this.changeSource}></MovieSource> : null}
 
-                <div className="mx-auto flex pt-2">
-                    <div className="w-20 h-20 rounded text-center flex border-2 border-black">
-                        <ion-icon className="m-auto" size="large" name="ellipsis-horizontal-outline"></ion-icon>
-                    </div>
-
-                    <div className="w-20 h-20 rounded flex border-2 border-black ml-2">
-                        <div className="inline-block m-auto text-center">SUN 28TH</div>
-                    </div>
-
-                    <div className="w-20 h-20 rounded flex border-2 border-black ml-2">
-                        <div className="inline-block m-auto text-center">MON 28TH</div>
-                    </div>
-
-                    <div className="w-20 h-20 bg-green-500 rounded flex border-2 border-black ml-2">
-                        <div className="inline-block text-center m-auto">Today</div>
-                    </div>
-                </div>
+                <DateRow selected={this.state.dateSelected} change={this.changeDate} dates={this.state.dates}></DateRow>
 
                 <div className="flex pt-2 w-80 mt-2">
                     <input name="content border-2 border-black" type="text" />

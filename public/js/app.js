@@ -65864,6 +65864,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _MediaRow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MediaRow */ "./resources/js/components/MediaRow.js");
 /* harmony import */ var _MovieSource__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MovieSource */ "./resources/js/components/MovieSource.js");
+/* harmony import */ var _DateRow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DateRow */ "./resources/js/components/DateRow.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -65891,6 +65892,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Container = /*#__PURE__*/function (_Component) {
   _inherits(Container, _Component);
 
@@ -65905,21 +65907,51 @@ var Container = /*#__PURE__*/function (_Component) {
     _this.state = {
       category: 'Movie',
       showSource: true,
-      source: ''
+      source: '',
+      dates: [],
+      dateSelected: 0
     };
     _this.changeCategory = _this.changeCategory.bind(_assertThisInitialized(_this));
     _this.changeSource = _this.changeSource.bind(_assertThisInitialized(_this));
+    _this.changeDate = _this.changeDate.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Container, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var weekDays = ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+      var today = new Date();
+      var yesterday = new Date(today);
+      var twoDays = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      twoDays.setDate(today.getDate() - 2);
+      var yest = weekDays[yesterday.getDay()];
+      var two = weekDays[twoDays.getDay()];
+      this.setState({
+        dates: [{
+          name: '...',
+          value: '-3'
+        }, {
+          name: two,
+          value: '-2'
+        }, {
+          name: yest,
+          value: '-1'
+        }, {
+          name: 'Today',
+          value: '0'
+        }]
+      });
+    }
+  }, {
     key: "changeCategory",
     value: function changeCategory(changeTo) {
       this.setState({
         category: changeTo,
         showSource: changeTo == "Movie" ? true : false,
         source: '',
-        dateSelected: 'today'
+        dateSelected: 'Today'
       });
     }
   }, {
@@ -65927,6 +65959,13 @@ var Container = /*#__PURE__*/function (_Component) {
     value: function changeSource(source) {
       this.setState({
         source: source
+      });
+    }
+  }, {
+    key: "changeDate",
+    value: function changeDate(date) {
+      this.setState({
+        dateSelected: date
       });
     }
   }, {
@@ -65940,27 +65979,11 @@ var Container = /*#__PURE__*/function (_Component) {
       }), this.state.showSource ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_MovieSource__WEBPACK_IMPORTED_MODULE_3__["default"], {
         source: this.state.source,
         change: this.changeSource
-      }) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "mx-auto flex pt-2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "w-20 h-20 rounded text-center flex border-2 border-black"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ion-icon", {
-        className: "m-auto",
-        size: "large",
-        name: "ellipsis-horizontal-outline"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "w-20 h-20 rounded flex border-2 border-black ml-2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "inline-block m-auto text-center"
-      }, "SUN 28TH")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "w-20 h-20 rounded flex border-2 border-black ml-2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "inline-block m-auto text-center"
-      }, "MON 28TH")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "w-20 h-20 bg-green-500 rounded flex border-2 border-black ml-2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "inline-block text-center m-auto"
-      }, "Today"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DateRow__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        selected: this.state.dateSelected,
+        change: this.changeDate,
+        dates: this.state.dates
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex pt-2 w-80 mt-2"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         name: "content border-2 border-black",
@@ -65979,6 +66002,83 @@ var Container = /*#__PURE__*/function (_Component) {
 if (document.getElementById('container')) {
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Container, null), document.getElementById('container'));
 }
+
+/***/ }),
+
+/***/ "./resources/js/components/DateRow.js":
+/*!********************************************!*\
+  !*** ./resources/js/components/DateRow.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var DateRow = /*#__PURE__*/function (_Component) {
+  _inherits(DateRow, _Component);
+
+  var _super = _createSuper(DateRow);
+
+  function DateRow() {
+    _classCallCheck(this, DateRow);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(DateRow, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "mx-auto flex pt-2"
+      }, this.props.dates.map(function (date, index) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: index,
+          className: "".concat(_this.props.selected == date.name ? "bg-green-500" : "", " w-20 h-20 rounded text-center border-2 border-black flex mr-2"),
+          onClick: function onClick() {
+            return _this.props.change(date.name);
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "m-auto"
+        }, date.name));
+      }));
+    }
+  }]);
+
+  return DateRow;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (DateRow);
 
 /***/ }),
 
