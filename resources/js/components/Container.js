@@ -13,11 +13,13 @@ class Container extends Component {
             showSource: true,
             source: '',
             dates: [],
-            dateSelected: 0
+            dateSelected: 0,
+            content: ''
         }
         this.changeCategory = this.changeCategory.bind(this);
         this.changeSource = this.changeSource.bind(this);
         this.changeDate = this.changeDate.bind(this);
+        this.changeContent = this.changeContent.bind(this);
     }
 
     componentDidMount() {
@@ -61,6 +63,12 @@ class Container extends Component {
         })
     }
 
+    changeContent(event) {
+        this.setState({
+            content: event.target.value
+        })
+    }
+
     render() {
         return (
             <div className="container">
@@ -70,8 +78,14 @@ class Container extends Component {
 
                 <DateRow selected={this.state.dateSelected} change={this.changeDate} dates={this.state.dates}></DateRow>
 
-                <div className="flex pt-2 w-80 mt-2">
-                    <input name="content border-2 border-black" type="text" />
+                <div className="flex pt-2 w-80 mt-2 bg-green-200">
+                    <label htmlFor="media_name">Name: </label>
+                    <input className="border-2 border-black rounded"
+                           type="text"
+                           name="media_name"
+                           onChange={this.changeContent}
+                           value={this.state.content}
+                    />
                 </div>
 
                 <button className="w-80 bg-green-600 text-white rounded border-2 border-black py-4 ml-4">Save</button>

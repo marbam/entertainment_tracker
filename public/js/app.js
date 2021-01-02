@@ -65909,11 +65909,13 @@ var Container = /*#__PURE__*/function (_Component) {
       showSource: true,
       source: '',
       dates: [],
-      dateSelected: 0
+      dateSelected: 0,
+      content: ''
     };
     _this.changeCategory = _this.changeCategory.bind(_assertThisInitialized(_this));
     _this.changeSource = _this.changeSource.bind(_assertThisInitialized(_this));
     _this.changeDate = _this.changeDate.bind(_assertThisInitialized(_this));
+    _this.changeContent = _this.changeContent.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -65969,6 +65971,13 @@ var Container = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "changeContent",
+    value: function changeContent(event) {
+      this.setState({
+        content: event.target.value
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -65984,10 +65993,15 @@ var Container = /*#__PURE__*/function (_Component) {
         change: this.changeDate,
         dates: this.state.dates
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "flex pt-2 w-80 mt-2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        name: "content border-2 border-black",
-        type: "text"
+        className: "flex pt-2 w-80 mt-2 bg-green-200"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "media_name"
+      }, "Name: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "border-2 border-black rounded",
+        type: "text",
+        name: "media_name",
+        onChange: this.changeContent,
+        value: this.state.content
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "w-80 bg-green-600 text-white rounded border-2 border-black py-4 ml-4"
       }, "Save"));
