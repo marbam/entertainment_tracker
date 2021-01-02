@@ -1,59 +1,70 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import MediaRow from './MediaRow';
-
-function Container() {
-
-    return (
-
-        <div className="container">
+import MovieSource from './MovieSource';
 
 
-            <MediaRow></MediaRow>
+class Container extends Component {
 
-            <div className="mx-auto flex pt-2">
-                <div className="w-20 h-20 bg-green-500 rounded flex border-2 border-black">
-                    <div className="inline-block text-red-900 mt-6 ml-2">NETFLIX</div>
+    constructor () {
+        super();
+        this.state = {
+            category: 'Movie',
+            showSource: true,
+            source: ''
+        }
+        this.changeCategory = this.changeCategory.bind(this);
+        this.changeSource = this.changeSource.bind(this);
+    }
+
+    changeCategory(changeTo) {
+        this.setState({
+            category:changeTo,
+            showSource: changeTo == "Movie" ? true : false,
+            source: '',
+            dateSelected: 'today'
+        })
+    }
+
+    changeSource(source) {
+        this.setState({
+            source:source
+        })
+    }
+
+    render() {
+        return (
+            <div className="container">
+
+                <MediaRow category={this.state.category} change={this.changeCategory}></MediaRow>
+                {this.state.showSource ? <MovieSource source={this.state.source} change={this.changeSource}></MovieSource> : null}
+
+                <div className="mx-auto flex pt-2">
+                    <div className="w-20 h-20 rounded text-center flex border-2 border-black">
+                        <ion-icon className="m-auto" size="large" name="ellipsis-horizontal-outline"></ion-icon>
+                    </div>
+
+                    <div className="w-20 h-20 rounded flex border-2 border-black ml-2">
+                        <div className="inline-block m-auto text-center">SUN 28TH</div>
+                    </div>
+
+                    <div className="w-20 h-20 rounded flex border-2 border-black ml-2">
+                        <div className="inline-block m-auto text-center">MON 28TH</div>
+                    </div>
+
+                    <div className="w-20 h-20 bg-green-500 rounded flex border-2 border-black ml-2">
+                        <div className="inline-block text-center m-auto">Today</div>
+                    </div>
                 </div>
 
-                <div className="w-20 h-20 rounded text-center flex border-2 border-black ml-2">
-                    <div className="inline-block mt-6 ml-2 uppercase">Cinema</div>
+                <div className="flex pt-2 w-80 mt-2">
+                    <input name="content border-2 border-black" type="text" />
                 </div>
 
-                <div className="w-20 h-20 rounded text-center flex border-2 border-black ml-2">
-                    <div className="inline-block mt-6 ml-7 uppercase">TV</div>
-                </div>
-
-                <div className="w-20 h-20 rounded text-center flex border-2 border-black ml-2">
-                    <ion-icon className="m-auto" size="large" name="ellipsis-horizontal-outline"></ion-icon>
-                </div>
+                <button className="w-80 bg-green-600 text-white rounded border-2 border-black py-4 ml-4">Save</button>
             </div>
-
-            <div className="mx-auto flex pt-2">
-                <div className="w-20 h-20 rounded text-center flex border-2 border-black">
-                    <ion-icon className="m-auto" size="large" name="ellipsis-horizontal-outline"></ion-icon>
-                </div>
-
-                <div className="w-20 h-20 rounded flex border-2 border-black ml-2">
-                    <div className="inline-block m-auto text-center">SUN 28TH</div>
-                </div>
-
-                <div className="w-20 h-20 rounded flex border-2 border-black ml-2">
-                    <div className="inline-block m-auto text-center">MON 28TH</div>
-                </div>
-
-                <div className="w-20 h-20 bg-green-500 rounded flex border-2 border-black ml-2">
-                    <div className="inline-block text-center m-auto">Today</div>
-                </div>
-            </div>
-
-            <div className="flex pt-2 w-80 mt-2">
-                <input name="content border-2 border-black" type="text" />
-            </div>
-
-            <button className="w-80 bg-green-600 text-white rounded border-2 border-black py-4 ml-4">Save</button>
-        </div>
-    );
+        );
+    }
 }
 
 export default Container;
